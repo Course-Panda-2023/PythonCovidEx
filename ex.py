@@ -55,7 +55,7 @@ def load_file(folder_name):
     for file_name in file_names:
         arr = np.load(root_dir+"\\"+file_name,allow_pickle=True)
         a.append(arr['arr_0'].shape)
-        final_arr = np.append(arr['arr_0'], [np.nan] * (4016 - arr['arr_0'].shape[0]))
+        final_arr = np.append(arr['arr_0'], [np.nan] * (4016 - arr['arr_0'].shape[0])) #Complements each vector to size 4016
         b.append(final_arr)
     #print(set(a),folder_name,len(file_names))
     return np.array(b)
