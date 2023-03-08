@@ -123,52 +123,6 @@ def decrypt_dates(directory):
 # decrypt_dates("ex1")
 
 # exc 4
-
-# testlst = [3, 3, 3]
-# arr = np.array([testlst, [4, 5, 6]])
-#
-#
-# # print("original list: ", os.listdir("ex1"))
-#
-#
-# def sort_columns(dir):
-#     columns = []
-#     directory = os.listdir(dir)
-#     for item in directory:
-#         columns.append(item)
-#     columns.sort()
-#     return columns
-#
-# def sort_rows(directory):
-#     files_list = []
-#     for root, dirs, files in os.walk(directory):
-#         for file in files:
-#             file_path = os.path.join(root, file)
-#             if os.path.isfile(file_path):
-#                 folder = root.split(directory)[1].strip('/')
-#                 file_name = os.path.splitext(os.path.basename(file_path))[0]  # removes path and extension
-#                 file_name = file_name[:-9]  # removes timestamp
-#                 files_list.append((folder, file_name))
-#     files_list = sorted(files_list)
-#     result = []
-#     current_folder = None
-#     for folder, file_name in files_list:
-#         if folder != current_folder:
-#             result.append([file_name])
-#             current_folder = folder
-#         else:
-#             result[-1].append(file_name)
-#     return result
-#
-# def create_numpy_table(dir):
-#     cols = sort_columns(dir)
-#     rows = sort_rows(dir)
-#     rows_flat = [item for sublist in rows for item in sublist]  # flatten the rows list
-#     table = np.array(cols + rows_flat)
-#     np.savez('table.npz', table)  # save the numpy array to a file
-
-# create_numpy_table("ex1")
-
 def create_table_np(directory_path):
     subdirs = [f.path for f in os.scandir(directory_path) if f.is_dir()] # get all subdirectories in the given directory
     folder_dict = {}
