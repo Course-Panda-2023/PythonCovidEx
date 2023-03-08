@@ -67,5 +67,5 @@ def ex4():
         a = load_file(folder)
         f_mat.append(a)
     f_mat:np.array = np.array(f_mat)
-    f_mat = f_mat.reshape(76,14,4016)
+    #f_mat = f_mat.reshape(76,14,4016)
     np.savez('ex4_arr.npz',f_mat)
