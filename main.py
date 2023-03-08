@@ -116,8 +116,84 @@ def decrypt_dates(directory):
             new_file_name = date.replace(':', '_').replace('/',
                                                            '-')  # replace invalid characters with allowed characters
             new_file_path = os.path.join(root, new_file_name)  # concatenate the directory path with the new file name
-            os.rename(file_path, new_file_path)
+            os.rename(file_path, new_file_path + ".npz")
+    print("finished")
+
 
 # decrypt_dates("ex1")
 
-#exc 4
+# exc 4
+
+# testlst = [3, 3, 3]
+# arr = np.array([testlst, [4, 5, 6]])
+#
+#
+# # print("original list: ", os.listdir("ex1"))
+#
+#
+# def sort_columns(dir):
+#     columns = []
+#     directory = os.listdir(dir)
+#     for item in directory:
+#         columns.append(item)
+#     columns.sort()
+#     return columns
+#
+# def sort_rows(directory):
+#     files_list = []
+#     for root, dirs, files in os.walk(directory):
+#         for file in files:
+#             file_path = os.path.join(root, file)
+#             if os.path.isfile(file_path):
+#                 folder = root.split(directory)[1].strip('/')
+#                 file_name = os.path.splitext(os.path.basename(file_path))[0]  # removes path and extension
+#                 file_name = file_name[:-9]  # removes timestamp
+#                 files_list.append((folder, file_name))
+#     files_list = sorted(files_list)
+#     result = []
+#     current_folder = None
+#     for folder, file_name in files_list:
+#         if folder != current_folder:
+#             result.append([file_name])
+#             current_folder = folder
+#         else:
+#             result[-1].append(file_name)
+#     return result
+#
+# def create_numpy_table(dir):
+#     cols = sort_columns(dir)
+#     rows = sort_rows(dir)
+#     rows_flat = [item for sublist in rows for item in sublist]  # flatten the rows list
+#     table = np.array(cols + rows_flat)
+#     np.savez('table.npz', table)  # save the numpy array to a file
+
+# create_numpy_table("ex1")
+
+def create_table_np(directory_path):
+    subdirs = [f.path for f in os.scandir(directory_path) if f.is_dir()] # get all subdirectories in the given directory
+    folder_dict = {}
+    for subdir in subdirs: # loop through each subdirectory
+        folder_name = os.path.basename(subdir) # get the folder name from the subdirectory path
+        files = [f.name for f in os.scandir(subdir) if f.is_file()] # get all files in the subdirectory
+        if folder_name not in folder_dict:
+            folder_dict[folder_name] = [files]
+        else:
+            folder_dict[folder_name].append(files)
+    # create numpy arrays from the folder and file names
+    folder_names = []
+    file_names = []
+    for folder, files_list in folder_dict.items():
+        folder_names.extend([folder] * len(files_list))
+        for files in files_list:
+            file_names.append(files)
+    folder_array = np.array(folder_names)
+    file_array = np.array(file_names)
+    # stack the folder and file arrays horizontally to create the table
+    table = np.column_stack((folder_array, file_array))
+    np.savez('table.npz', table=table)
+
+
+
+table = create_table_np("ex1")
+b = np.load('table.npz')
+print(b['table'])
