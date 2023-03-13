@@ -81,6 +81,30 @@ def ex2():
     file.SyncToDisk()
     print('finished updating distance_b values ex2')
 
+def ex_2_b():
+    # Open connection to file
+    file = ogr.Open("C:\\Users\\training\\Desktop\\pandaCourse\\Python\\PythonCovidEx\\Gdal\\Targil1\\AFG_adm2.shp", 1)
+    layer = file.GetLayer()
+
+    # Define a new field for the layer
+    field_defn = ogr.FieldDefn("ne_counter", ogr.OFTInteger)
+
+    # Add the field to the layer
+    layer.CreateField(field_defn)
+
+    for feature in layer:
+        neighbor_counter = 0
+        geom = feature.GetGeometryRef()
+
+        for i in range(len(layer)):
+            comp_feature = layer.GetFeature(i)
+            comp_geom = comp_feature.GetGeometryRef()
+
+            if geom.Intersect(comp_geom) and comp_geom != geom:
+                neighbor_counter += 1
+                
+        feature.SetField("ne_counter", neighbor_counter)
+        layer.SetFeature(feature)
 def ex3():
     #ex3
     file = ogr.Open("C:\\Users\\training\\Desktop\\pandaCourse\\Python\\PythonCovidEx\\Gdal\\Targil1\\AFG_adm2.shp", 1)
@@ -112,5 +136,3 @@ def ex3():
     # Close the shapefiles
     source_shapefile = None
     new_shapefile = None
-
-ex3()
