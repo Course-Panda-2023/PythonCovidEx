@@ -102,7 +102,7 @@ def ex_2_b():
 
             if geom.Intersect(comp_geom) and comp_geom != geom:
                 neighbor_counter += 1
-                
+
         feature.SetField("ne_counter", neighbor_counter)
         layer.SetFeature(feature)
 def ex3():
@@ -136,3 +136,17 @@ def ex3():
     # Close the shapefiles
     source_shapefile = None
     new_shapefile = None
+
+def ex4():
+    # Open file connection
+    file = ogr.Open("C:\\Users\\training\\Desktop\\pandaCourse\\Python\\PythonCovidEx\\Gdal\\Targil1\\newshapefile.shp", 1)
+
+    # Define the querys
+    subquery = "SELECT MAX(ne_counter) as max_nei FROM newshapefile"
+    query = f"SELECT * FROM newshapefile WHERE ne_counter = ('({subquery})') "
+
+    # Execute
+    layer = file.ExecuteSQL(query)
+    print (layer)
+
+ex4()
