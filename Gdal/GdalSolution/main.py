@@ -142,11 +142,39 @@ def ex4():
     file = ogr.Open("C:\\Users\\training\\Desktop\\pandaCourse\\Python\\PythonCovidEx\\Gdal\\Targil1\\newshapefile.shp", 1)
 
     # Define the querys
-    subquery = "SELECT MAX(ne_counter) as max_nei FROM newshapefile"
-    query = f"SELECT * FROM newshapefile WHERE ne_counter = ('({subquery})') "
+    query = f"SELECT * FROM newshapefile ORDER BY ne_counter DESC LIMIT 1"
 
     # Execute
     layer = file.ExecuteSQL(query)
-    print (layer)
+    feature = layer.GetNextFeature()
+    center_point = feature.geometry().Centroid()
+
+    layer = file.GetLayer()
+    max_area = 0
+    for feature in layer:
+        geom = feature.GetGeometryRef()
+        current_area = geom.GetArea()
+        if (current_area > max_area):
+            max_area = current_area
+            max_area_feature = feature
+    second_center_point = max_area_feature.geometry().Centroid()
+
+    # Define the two coordinates of the line feature
+    centroid1 = (second_center_point.GetX(), second_center_point.GetY())
+    centroid2 = (center_point.GetX(), center_point.GetY())
+
+    # Create a new line geometry object
+    line = ogr.Geometry(ogr.wkbLineString)
+
+    # Add the two points to the line geometry object
+    line.AddPoint(*centroid1)
+    line.AddPoint(*centroid2)
+
+    # Create a new feature object with the line geometry
+    feature = ogr.Feature(feature_def=layer.GetLayerDefn())
+    feature.SetGeometry(line)
+
+    # Add the new feature to the layer
+    layer.CreateFeature(feature)
 
 ex4()
