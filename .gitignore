@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .idea
 Encryption/question
+.pkl
 *.npz
 .npz
 .Python
