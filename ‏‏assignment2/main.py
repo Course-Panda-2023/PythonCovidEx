@@ -1,31 +1,18 @@
 import numpy as np
-from numpy import asarray as ImageAsNumpyArray
-from PIL import Image
-
-
-def npz_file_to_console():
-    npz_loaded_file = np.load(".\\ex2\\mysterious_file.npz")
-    for key_from_npz_file in npz_loaded_file.keys():
-        print(key_from_npz_file)
-
-    data = Image.fromarray(npz_loaded_file.get("arr_0"))
-
-    # saving the final output
-    # as a PNG file
-    data.save('gfg_dummy_pic.png')
+from PIL import Image as img
 
 
 def main():
-    npz_loaded_file = np.load(".\\ex2\\mysterious_file.npz")
-    numpy_of_image_with_background = Image.fromarray(npz_loaded_file.get("arr_0"))
+    file: np.lib.npyio.NpzFile = np.load(".\\ex2\\mysterious_file.npz")
+    number_on_background: np.ndarray = img.fromarray(file.get("arr_0"))
 
-    img = Image.open(".\\ex2\\noised_img.png")
-    numpy_background_image_data = ImageAsNumpyArray(img)
+    image = img.open(".\\ex2\\noised_img.png")
+    background: np.ndarray = np.asarray(image)
 
-    new_image_as_numpy_array_without_background = numpy_background_image_data - numpy_of_image_with_background
+    no_background_image: np.ndarray = background - number_on_background
 
-    only_number_without_background = Image.fromarray(new_image_as_numpy_array_without_background)
-    only_number_without_background.save('mysterious_message.png')
+    number_image = img.fromarray(no_background_image)
+    number_image.save('mysterious_message.png')
 
 
 if __name__ == '__main__':

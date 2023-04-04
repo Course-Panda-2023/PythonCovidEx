@@ -46,7 +46,7 @@ def rename_ex1_directory(directory, dictionary):
         rename_ex1_file(directory, int(timestamp_of_file), pickle_timestamp_as_int, file_filename)
 
 
-def rename_ex1_directories_files():
+def rename_directories_files():
     loaded_pickle_file = load_pickle_file()
 
     directories_names_list = os.listdir(cons.PATH_OF_EX1_DIRECTORY)
@@ -59,7 +59,7 @@ def rename_ex1_directories_files():
 
 
 def main():
-    rename_ex1_directories_files()
+    rename_directories_files()
 
 
 if __name__ == '__main__':
